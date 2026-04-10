@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Childsphere – Youth-led movement championing children's rights, wellbeing and dignity worldwide.">
+  <title>Childsphere | Every Child Matters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Fraunces:ital,wght@0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0062FF">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-container">
+    <a href="#hero" class="nav-brand">
+      <div class="nav-logo-wrap">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="22" r="22" fill="#3B9EE8"/>
+          <circle cx="22" cy="15" r="6.5" fill="white"/>
+          <path d="M8 36c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="34" cy="11" r="3.5" fill="#FFD600"/>
+          <circle cx="10" cy="11" r="3.5" fill="#FFD600"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">Childsphere</div>
+        <div class="brand-tagline">Every Child Matters</div>
+      </div>
+    </a>
+
+    <!-- Desktop nav: show 6 core links, rest in More -->
+    <div class="nav-links" id="navLinks">
+      <a href="#about" data-i18n="nav_about">About</a>
+      <a href="#whatwedo" data-i18n="nav_whatwedo">What We Do</a>
+      <a href="#activities" data-i18n="nav_activities">Activities</a>
+      <a href="#impact" data-i18n="nav_impact">Impact</a>
+      <a href="#programs" data-i18n="nav_programs">Programs</a>
+      <a href="#partners" data-i18n="nav_partners">Partners</a>
+      <div class="nav-more-wrap">
+        <button class="nav-more-btn" onclick="toggleNavMore(event)">More <i class="fa-solid fa-chevron-down fa-xs"></i></button>
+        <div class="nav-more-dropdown" id="navMoreDropdown">
+          <a href="#videos"        onclick="closeNavMore()" data-i18n="nav_videos">Videos</a>
+          <a href="#gallery"       onclick="closeNavMore()" data-i18n="nav_gallery">Gallery</a>
+          <a href="#games"         onclick="closeNavMore()">Games &amp; Activities</a>
+          <a href="#opportunities" onclick="closeNavMore()" data-i18n="nav_opps">Opportunities</a>
+          <a href="#blog"          onclick="closeNavMore()" data-i18n="nav_stories">Stories</a>
+          <a href="#team"          onclick="closeNavMore()" data-i18n="nav_team">Team</a>
+          <a href="#donate"        onclick="closeNavMore()" data-i18n="nav_donate">Donate</a>
+          <a href="#emergency"     onclick="closeNavMore()" style="color:var(--rose)" data-i18n="nav_emergency">Emergency</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <!-- Language -->
+      <div class="lang-wrap">
+        <button id="langBtn" class="lang-btn" onclick="toggleLangMenu(event)">🇬🇧 English <i class="fa-solid fa-chevron-down fa-xs"></i></button>
+        <div class="lang-dropdown" id="langDropdown">
+          <button onclick="setLang('en')">🇬🇧 English</button>
+          <button onclick="setLang('fr')">🇫🇷 Français</button>
+        </div>
+      </div>
+      <!-- Theme -->
+      <button onclick="toggleTheme()" class="theme-btn" aria-label="Toggle theme">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+      </button>
+      <!-- Auth buttons -->
+      <div id="authBtns" style="display:flex;align-items:center;gap:6px;">
+        <button onclick="openModal('loginModal')" class="btn-nav-outline" data-i18n="nav_login">Login</button>
+        <button onclick="openModal('signupModal')" class="btn-nav-primary" data-i18n="nav_signup">Sign Up</button>
+      </div>
+      <!-- User menu (shown when logged in) -->
+      <div id="userMenu" style="display:none;align-items:center;gap:8px;">
+        <div class="user-avatar" id="userAvatar">J</div>
+        <span id="greeting" style="font-size:.82rem;font-weight:700"></span>
+        <button onclick="openUserDashboard()" class="btn-nav-outline" style="position:relative">
+          <i class="fa-solid fa-inbox"></i>
+          <span id="inboxBadge" class="inbox-badge" style="display:none">0</span>
+        </button>
+        <button onclick="logout()" class="btn-nav-outline" data-i18n="nav_logout">Logout</button>
+        <button onclick="openAdminPanel()" class="btn-admin" id="adminBtn" style="display:none">Admin</button>
+      </div>
+      <!-- Emergency CTA -->
+      <a href="#emergency" onclick="document.getElementById('emergency').scrollIntoView({behavior:'smooth'})" class="btn-emergency-nav">
+        <i class="fa-solid fa-phone"></i> <span class="emg-nav-label">Emergency</span>
+      </a>
+      <!-- Donate CTA -->
+      <button onclick="document.getElementById('donate').scrollIntoView({behavior:'smooth'})" class="btn-donate">
+        <i class="fa-solid fa-heart"></i> <span data-i18n="nav_donate">Donate</span>
+      </button>
+      <!-- Hamburger -->
+      <button class="hamburger-btn" onclick="toggleMobile()" aria-label="Menu">
+        <i class="fa-solid fa-bars" id="hamIcon"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- PWA install banner -->
+  <div id="installBanner" style="display:none;align-items:center;justify-content:space-between;padding:.5rem 1.5rem;background:var(--blue);color:white;font-size:.8rem;gap:1rem;flex-wrap:wrap;">
+    <span><i class="fa-solid fa-mobile-screen" style="margin-right:.4rem"></i>Install Childsphere on your device — works offline!</span>
+    <div style="display:flex;gap:.5rem">
+      <button onclick="installApp()" style="padding:4px 14px;border-radius:99px;background:white;color:var(--blue);border:none;font-weight:700;font-size:.76rem;cursor:pointer">Install</button>
+      <button onclick="dismissInstall()" style="padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.2);color:white;border:none;cursor:pointer"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div id="mobileDrawer">
+  <a href="#about" onclick="closeMobile()" data-i18n="nav_about">About</a>
+  <a href="#whatwedo" onclick="closeMobile()" data-i18n="nav_whatwedo">What We Do</a>
+  <a href="#activities" onclick="closeMobile()" data-i18n="nav_activities">Activities</a>
+  <a href="#impact" onclick="closeMobile()" data-i18n="nav_impact">Impact</a>
+  <a href="#programs" onclick="closeMobile()" data-i18n="nav_programs">Programs</a>
+  <a href="#videos" onclick="closeMobile()" data-i18n="nav_videos">Videos</a>
+  <a href="#gallery" onclick="closeMobile()" data-i18n="nav_gallery">Gallery</a>
+  <a href="#games" onclick="closeMobile()">Games &amp; Activities</a>
+  <a href="#opportunities" onclick="closeMobile()" data-i18n="nav_opps">Opportunities</a>
+  <a href="#blog" onclick="closeMobile()" data-i18n="nav_stories">Stories</a>
+  <a href="#team" onclick="closeMobile()" data-i18n="nav_team">Team</a>
+  <a href="#donate" onclick="closeMobile()" data-i18n="nav_donate">Donate</a>
+  <a href="#emergency" onclick="closeMobile()" style="color:var(--rose)" data-i18n="nav_emergency">Emergency</a>
+  <div class="mobile-auth" id="mobileAuth">
+    <button onclick="closeMobile();openModal('loginModal')" class="btn-nav-outline w100" data-i18n="nav_login">Login</button>
+    <button onclick="closeMobile();openModal('signupModal')" class="btn-nav-primary w100" data-i18n="nav_signup">Sign Up</button>
+  </div>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section id="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-inner container">
+    <div class="hero-text">
+      <div class="hero-pill" id="heroTag">Youth-Led Movement · Global</div>
+      <h1 class="hero-title" id="heroH1">Every Child Has a Voice.<br><span class="hero-accent">We Amplify It.</span></h1>
+      <p class="hero-sub" id="heroSub">Childsphere champions children's rights, wellbeing and dignity — through education, creative programs, emergency support, and community action.</p>
+      <div class="hero-cta">
+        <a href="#whatwedo" class="btn btn-hero-primary">Discover Our Work <i class="fa-solid fa-arrow-right"></i></a>
+        <button onclick="openModal('signupModal')" class="btn btn-hero-ghost">Join Free</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><span class="count-num" data-target="4800">0</span><span>Children reached</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="count-num" data-target="38">0</span><span>Active programs</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="count-num" data-target="12">0</span><span>Partner districts</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card hc1"><div class="hc-icon" style="background:#EFF6FF"><i class="fa-solid fa-scale-balanced" style="color:#1D4ED8"></i></div><div><div class="hc-title">Rights Education</div><div class="hc-sub">54 UNCRC rights taught</div></div></div>
+      <div class="hero-card hc2"><div class="hc-icon" style="background:#F0FDF4"><i class="fa-solid fa-heart-pulse" style="color:#166534"></i></div><div><div class="hc-title">Wellbeing Programs</div><div class="hc-sub">Mind, body &amp; soul</div></div></div>
+      <div class="hero-card hc3"><div class="hc-icon" style="background:#FFF1F2"><i class="fa-solid fa-shield-halved" style="color:#BE123C"></i></div><div><div class="hc-title">Child Protection</div><div class="hc-sub">24/7 emergency network</div></div></div>
+      <div class="hero-card hc4"><div class="hc-icon" style="background:#F5F3FF"><i class="fa-solid fa-people-group" style="color:#6D28D9"></i></div><div><div class="hc-title">Youth Leadership</div><div class="hc-sub">210+ trained educators</div></div></div>
+    </div>
+  </div>
+  <div class="hero-scroll" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})"><i class="fa-solid fa-chevron-down"></i></div>
+</section>
+
+<!-- ==================== ABOUT ==================== -->
+<section id="about" class="section">
+  <div class="sec-inner">
+    <div class="grid-about">
+      <div class="about-text reveal">
+        <div class="tag tag-blue" data-i18n="sec_about">About Childsphere</div>
+        <h2 class="sec-title">A movement born from children, for children.</h2>
+        <p class="sec-body">Childsphere is a youth-led organisation rooted in Zambia with global reach. We believe every child — regardless of where they were born — deserves to know their rights, feel safe, and have the chance to thrive.</p>
+        <p class="sec-body">Founded by young people who experienced the gap between rights on paper and rights in practice, we use education, creativity, emergency response and community organising to close that gap.</p>
+        <div class="about-values">
+          <div class="av"><i class="fa-solid fa-scale-balanced av-icon" style="color:var(--blue)"></i><span>Rights-based approach</span></div>
+          <div class="av"><i class="fa-solid fa-children av-icon" style="color:var(--teal)"></i><span>Child-centred design</span></div>
+          <div class="av"><i class="fa-solid fa-seedling av-icon" style="color:var(--green)"></i><span>Community-grown solutions</span></div>
+          <div class="av"><i class="fa-solid fa-globe av-icon" style="color:var(--violet)"></i><span>Global reach, local impact</span></div>
+        </div>
+      </div>
+      <div class="about-img-wrap reveal">
+        <img src="https://images.unsplash.com/photo-1536337005238-94b997371b40?w=600&q=80" alt="Children learning" loading="lazy">
+        <div class="about-badge"><div class="ab-year">2020</div><div class="ab-lbl">Founded in Lusaka</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== WHAT WE DO ==================== -->
+<section id="whatwedo" class="section bg-surface">
+  <div class="sec-inner">
+    <div class="sec-head text-center reveal">
+      <div class="tag tag-teal">Our Focus</div>
+      <h2 class="sec-title">Four pillars. One child at the centre.</h2>
+      <p class="sec-sub">Everything we do flows from one conviction: children are rights-holders, not passive recipients of charity.</p>
+    </div>
+    <div class="pillars-grid reveal">
+      <div class="pillar-card" onclick="openPillarModal(1)"><div class="pillar-icon" style="background:#EFF6FF"><i class="fa-solid fa-scale-balanced" style="color:#1D4ED8;font-size:1.6rem"></i></div><h3>Rights Education</h3><p>Loud, joyful learning about every child's legal and human rights — through songs, games and storytelling.</p><span class="pillar-more">Read more <i class="fa-solid fa-arrow-right"></i></span></div>
+      <div class="pillar-card" onclick="openPillarModal(2)"><div class="pillar-icon" style="background:#F0FDF4"><i class="fa-solid fa-heart-pulse" style="color:#15803D;font-size:1.6rem"></i></div><h3>Wellbeing &amp; Health</h3><p>Mental, emotional and physical health programs delivered in schools, clinics and community spaces.</p><span class="pillar-more">Read more <i class="fa-solid fa-arrow-right"></i></span></div>
+      <div class="pillar-card" onclick="openPillarModal(3)"><div class="pillar-icon" style="background:#FFF1F2"><i class="fa-solid fa-shield-halved" style="color:#BE123C;font-size:1.6rem"></i></div><h3>Emergency Protection</h3><p>Rapid-response support for children facing abuse, neglect or crisis — linked directly to authorities and shelters.</p><span class="pillar-more">Read more <i class="fa-solid fa-arrow-right"></i></span></div>
+      <div class="pillar-card" onclick="openPillarModal(4)"><div class="pillar-icon" style="background:#F5F3FF"><i class="fa-solid fa-people-group" style="color:#6D28D9;font-size:1.6rem"></i></div><h3>Youth Leadership</h3><p>Training young people aged 14–24 to become peer educators, community advocates and program leaders.</p><span class="pillar-more">Read more <i class="fa-solid fa-arrow-right"></i></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ACTIVITIES ==================== -->
+<section id="activities" class="section">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <div class="tag tag-amber">Activities</div>
+      <h2 class="sec-title">Fun and growth for every stage of childhood</h2>
+      <p class="sec-sub">From early childhood through to youth partnerships — there is a place for everyone.</p>
+    </div>
+    <div class="age-tabs reveal">
+      <button class="age-tab active" onclick="switchAge('age0to6',this)">Early Childhood (0–6)</button>
+      <button class="age-tab" onclick="switchAge('age7to12',this)">School Age (7–12)</button>
+      <button class="age-tab" onclick="switchAge('age13to18',this)">Teens (13–18)</button>
+      <button class="age-tab" onclick="switchAge('age19to24',this)">Young Partners (19–24)</button>
+    </div>
+    <div class="act-panel active" id="age0to6">
+      <div class="acts-grid">
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#FEF9C3,#FDE68A)"><i class="fa-solid fa-music" style="font-size:2rem;color:#92400E"></i></div><div class="act-body"><span class="act-badge" style="background:#FEF9C3;color:#92400E">Ages 0–6</span><h4>Songs &amp; Rights Rhymes</h4><p>Rights-based songs and movement activities that embed values through play and joyful repetition.</p></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#ECFDF5,#A7F3D0)"><i class="fa-solid fa-paint-brush" style="font-size:2rem;color:#065F46"></i></div><div class="act-body"><span class="act-badge" style="background:#ECFDF5;color:#065F46">Ages 0–6</span><h4>Creative Playtime</h4><p>Drawing, colouring and crafts that encourage self-expression and emotional literacy.</p></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#EFF6FF,#BFDBFE)"><i class="fa-solid fa-book-open" style="font-size:2rem;color:#1E40AF"></i></div><div class="act-body"><span class="act-badge" style="background:#EFF6FF;color:#1E40AF">Ages 0–6</span><h4>Storytime Circles</h4><p>Age-appropriate stories about kindness, identity and belonging.</p></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#FFF7ED,#FED7AA)"><i class="fa-solid fa-face-smile" style="font-size:2rem;color:#D97706"></i></div><div class="act-body"><span class="act-badge" style="background:#FFF7ED;color:#D97706">Ages 0–6</span><h4>Emoji Rights Game</h4><p>Learn rights through fun emoji stories and simple matching games for tiny learners.</p><button onclick="openGame('emoji_story')" class="act-apply-btn">Play Game</button></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#F5F3FF,#DDD6FE)"><i class="fa-solid fa-person-walking" style="font-size:2rem;color:#7C3AED"></i></div><div class="act-body"><span class="act-badge" style="background:#F5F3FF;color:#7C3AED">Ages 0–6</span><h4>Movement &amp; Dance</h4><p>Body-awareness activities teaching personal space, consent and safety through movement.</p></div></div>
+      </div>
+    </div>
+    <div class="act-panel" id="age7to12">
+      <div class="acts-grid">
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#F0FDF4,#BBF7D0)"><i class="fa-solid fa-gamepad" style="font-size:2rem;color:#166534"></i></div><div class="act-body"><span class="act-badge" style="background:#F0FDF4;color:#166534">Ages 7–12</span><h4>Rights Quizzes &amp; Games</h4><p>Team competitions where children learn all 54 UNCRC rights through exciting challenges.</p><button onclick="openGame('rights_quiz')" class="act-apply-btn">Play Quiz</button></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#FFF7ED,#FED7AA)"><i class="fa-solid fa-microphone" style="font-size:2rem;color:#C2410C"></i></div><div class="act-body"><span class="act-badge" style="background:#FFF7ED;color:#C2410C">Ages 7–12</span><h4>Speak Up Club</h4><p>Public speaking, debate and poetry sessions that build confidence and give children a powerful voice.</p></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#FDF4FF,#E9D5FF)"><i class="fa-solid fa-masks-theater" style="font-size:2rem;color:#7E22CE"></i></div><div class="act-body"><span class="act-badge" style="background:#FDF4FF;color:#7E22CE">Ages 7–12</span><h4>Drama &amp; Role Play</h4><p>Theatrical performances exploring real children's rights scenarios.</p></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#EFF6FF,#BFDBFE)"><i class="fa-solid fa-font" style="font-size:2rem;color:#1D4ED8"></i></div><div class="act-body"><span class="act-badge" style="background:#EFF6FF;color:#1D4ED8">Ages 7–12</span><h4>Rights Word Scramble</h4><p>Unscramble rights-related words against the clock — builds vocabulary while learning.</p><button onclick="openGame('word_scramble')" class="act-apply-btn">Play Now</button></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#FFF1F2,#FECDD3)"><i class="fa-solid fa-shield-halved" style="font-size:2rem;color:#BE123C"></i></div><div class="act-body"><span class="act-badge" style="background:#FFF1F2;color:#BE123C">Ages 7–12</span><h4>Safety Challenge</h4><p>Interactive scenarios that teach children how to stay safe online, at home and in the community.</p><button onclick="openGame('safety_quiz')" class="act-apply-btn">Play Now</button></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#ECFDF5,#6EE7B7)"><i class="fa-solid fa-palette" style="font-size:2rem;color:#047857"></i></div><div class="act-body"><span class="act-badge" style="background:#ECFDF5;color:#047857">Ages 7–12</span><h4>Art for Rights</h4><p>Create posters, comics and digital art that express children's rights.</p></div></div>
+      </div>
+    </div>
+    <div class="act-panel" id="age13to18">
+      <div class="acts-grid">
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#EFF6FF,#93C5FD)"><i class="fa-solid fa-laptop" style="font-size:2rem;color:#1D4ED8"></i></div><div class="act-body"><span class="act-badge" style="background:#EFF6FF;color:#1D4ED8">Ages 13–18</span><h4>Digital Rights Lab</h4><p>Online safety, media literacy and using technology to advocate for children's rights.</p></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#ECFDF5,#6EE7B7)"><i class="fa-solid fa-seedling" style="font-size:2rem;color:#047857"></i></div><div class="act-body"><span class="act-badge" style="background:#ECFDF5;color:#047857">Ages 13–18</span><h4>Youth Advocacy</h4><p>Training in policy engagement, community campaigns and holding leaders accountable.</p></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#FFF1F2,#FECDD3)"><i class="fa-solid fa-hand-holding-heart" style="font-size:2rem;color:#BE123C"></i></div><div class="act-body"><span class="act-badge" style="background:#FFF1F2;color:#BE123C">Ages 13–18</span><h4>Peer Support Network</h4><p>Mental health first aid and peer counselling skills — safe spaces for teens.</p></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#CCFBF1,#99F6E4)"><i class="fa-solid fa-people-group" style="font-size:2rem;color:#0D9488"></i></div><div class="act-body"><span class="act-badge" style="background:#CCFBF1;color:#0D9488">Ages 13–18</span><h4>Leadership Journey Game</h4><p>Make strategic decisions as a young community leader and build your impact score.</p><button onclick="openGame('leadership_path')" class="act-apply-btn">Play Now</button></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#FFF7ED,#FED7AA)"><i class="fa-solid fa-trophy" style="font-size:2rem;color:#D97706"></i></div><div class="act-body"><span class="act-badge" style="background:#FFF7ED;color:#D97706">Ages 13–18</span><h4>Rights Champion Quiz</h4><p>Advanced UNCRC knowledge quiz — test your expertise!</p><button onclick="openGame('rights_quiz')" class="act-apply-btn">Challenge Me</button></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#F5F3FF,#C4B5FD)"><i class="fa-solid fa-newspaper" style="font-size:2rem;color:#5B21B6"></i></div><div class="act-body"><span class="act-badge" style="background:#F5F3FF;color:#5B21B6">Ages 13–18</span><h4>Journalism &amp; Storytelling</h4><p>Write real stories about child rights issues for publication on our platform.</p></div></div>
+      </div>
+    </div>
+    <div class="act-panel" id="age19to24">
+      <div class="acts-grid">
+        <div class="act-card partner-card"><div class="act-img" style="background:linear-gradient(135deg,#F5F3FF,#C4B5FD)"><i class="fa-solid fa-chalkboard-user" style="font-size:2rem;color:#5B21B6"></i></div><div class="act-body"><span class="act-badge" style="background:#F5F3FF;color:#5B21B6">Ages 19–24</span><h4>Become a Peer Educator</h4><p>Train as a certified Childsphere peer educator. Deliver sessions and receive a stipend.</p><button onclick="requireLogin(()=>openModal('partnerModal'))" class="act-apply-btn">Apply to Teach</button></div></div>
+        <div class="act-card partner-card"><div class="act-img" style="background:linear-gradient(135deg,#ECFDF5,#A7F3D0)"><i class="fa-solid fa-bullhorn" style="font-size:2rem;color:#065F46"></i></div><div class="act-body"><span class="act-badge" style="background:#ECFDF5;color:#065F46">Ages 19–24</span><h4>Community Champion</h4><p>Lead awareness campaigns and represent Childsphere in your community.</p><button onclick="requireLogin(()=>openModal('partnerModal'))" class="act-apply-btn">Become a Champion</button></div></div>
+        <div class="act-card partner-card"><div class="act-img" style="background:linear-gradient(135deg,#FFF7ED,#FDE68A)"><i class="fa-solid fa-handshake" style="font-size:2rem;color:#B45309"></i></div><div class="act-body"><span class="act-badge" style="background:#FFF7ED;color:#B45309">Ages 19–24</span><h4>Youth Organisation Partner</h4><p>Align your youth group with Childsphere — co-create programs and share resources.</p><button onclick="requireLogin(()=>openModal('partnerModal'))" class="act-apply-btn">Partner With Us</button></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#CCFBF1,#99F6E4)"><i class="fa-solid fa-people-group" style="font-size:2rem;color:#0D9488"></i></div><div class="act-body"><span class="act-badge" style="background:#CCFBF1;color:#0D9488">Ages 19–24</span><h4>Leadership Journey Game</h4><p>Advanced leadership scenario game — test your decision-making as an organisational leader.</p><button onclick="openGame('leadership_path')" class="act-apply-btn">Play Now</button></div></div>
+        <div class="act-card"><div class="act-img" style="background:linear-gradient(135deg,#F0FDF4,#BBF7D0)"><i class="fa-solid fa-puzzle-piece" style="font-size:2rem;color:#15803D"></i></div><div class="act-body"><span class="act-badge" style="background:#F0FDF4;color:#15803D">Ages 19–24</span><h4>Rights Match-Up Expert</h4><p>Expert-level UNCRC article matching challenge. Race the clock!</p><button onclick="openGame('rights_match')" class="act-apply-btn">Play Now</button></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== IMPACT ==================== -->
+<section id="impact" class="section bg-surface">
+  <div class="sec-inner">
+    <div class="sec-head text-center reveal">
+      <div class="tag tag-green">Our Impact</div>
+      <h2 class="sec-title">Numbers that represent real children</h2>
+    </div>
+    <div class="impact-grid reveal">
+      <div class="impact-card"><div class="impact-num count-num" data-target="4800">0</div><div class="impact-lbl">Children reached in 2024</div></div>
+      <div class="impact-card"><div class="impact-num count-num" data-target="38">0</div><div class="impact-lbl">Active programs</div></div>
+      <div class="impact-card"><div class="impact-num count-num" data-target="12">0</div><div class="impact-lbl">Districts covered</div></div>
+      <div class="impact-card"><div class="impact-num count-num" data-target="210">0</div><div class="impact-lbl">Trained peer educators</div></div>
+      <div class="impact-card"><div class="impact-num count-num" data-target="156">0</div><div class="impact-lbl">Emergency cases resolved</div></div>
+      <div class="impact-card"><div class="impact-num count-num" data-target="24">0</div><div class="impact-lbl">Partner organisations</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROGRAMS ==================== -->
+<section id="programs" class="section">
+  <div class="sec-inner">
+    <div class="sec-head text-center reveal"><div class="tag tag-blue">Programs</div><h2 class="sec-title">Structured programs with lasting impact</h2></div>
+    <div class="grid-3 reveal">
+      <div class="prog-card"><div class="prog-img" style="background:linear-gradient(135deg,#0062FF,#0044BB)"><i class="fa-solid fa-graduation-cap"></i></div><div class="prog-body"><h4>Rights Ambassadors</h4><p>Six-month training for young people aged 14–18 to become certified children's rights advocates in their schools.</p><a href="#opportunities" class="prog-link">View open applications <i class="fa-solid fa-arrow-right"></i></a></div></div>
+      <div class="prog-card"><div class="prog-img" style="background:linear-gradient(135deg,#059669,#047857)"><i class="fa-solid fa-heart-pulse"></i></div><div class="prog-body"><h4>Wellbeing in Schools</h4><p>Partnering with 30+ schools to deliver monthly wellbeing sessions covering mental health, safety and body autonomy.</p><a href="#partners" class="prog-link">Enrol your school <i class="fa-solid fa-arrow-right"></i></a></div></div>
+      <div class="prog-card"><div class="prog-img" style="background:linear-gradient(135deg,#7C3AED,#5B21B6)"><i class="fa-solid fa-shield-halved"></i></div><div class="prog-body"><h4>Emergency Response Network</h4><p>A network of trained responders who rapidly reach and support children in crisis across 12+ partner districts.</p><a href="#emergency" class="prog-link">Emergency contacts <i class="fa-solid fa-arrow-right"></i></a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PARTNERS ==================== -->
+<section id="partners" class="section bg-surface">
+  <div class="sec-inner">
+    <div class="sec-head text-center reveal"><div class="tag tag-violet">Partner With Us</div><h2 class="sec-title">Make a real difference through partnership</h2><p class="sec-sub">Banks, telecoms, NGOs, schools, government agencies and private companies are all welcome.</p></div>
+    <div class="partner-grid reveal">
+      <div class="partner-card"><div class="partner-icon"><i class="fa-solid fa-school"></i></div><h4>Schools &amp; Education</h4><p>Co-create curriculum, host rights workshops, and be recognised as a child-friendly institution.</p><button onclick="openModal('partnerFormModal')" class="btn btn-primary pcard-btn">Partner as School</button></div>
+      <div class="partner-card partner-featured"><div class="partner-badge">Most Popular</div><div class="partner-icon" style="background:rgba(255,255,255,.15);color:white"><i class="fa-solid fa-building-columns"></i></div><h4>Corporate Sponsors</h4><p>Fund videos, activities, emergency lines, or entire programs — with full transparency and impact reports.</p><button onclick="openModal('partnerFormModal')" class="btn btn-white pcard-btn" style="color:var(--blue)">Sponsor a Program</button></div>
+      <div class="partner-card"><div class="partner-icon"><i class="fa-solid fa-people-group"></i></div><h4>NGOs &amp; Community</h4><p>Joint outreach, shared resources, youth training and co-designed community programs.</p><button onclick="openModal('partnerFormModal')" class="btn btn-primary pcard-btn">Join as Partner</button></div>
+      <div class="partner-card"><div class="partner-icon"><i class="fa-solid fa-mobile-screen-button"></i></div><h4>Telecoms &amp; Tech</h4><p>Sponsor digital literacy, fund emergency helpline infrastructure, or provide devices and data.</p><button onclick="openModal('partnerFormModal')" class="btn btn-primary pcard-btn">Get in Touch</button></div>
+    </div>
+    <div class="partner-logos-row reveal">
+      <p style="text-align:center;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem">Trusted by organisations across Africa</p>
+      <div class="plr-logos">
+        <div class="plogo">UNICEF Zambia</div><div class="plogo">ZNBC</div><div class="plogo">Min. of Education</div><div class="plogo">Plan International</div><div class="plogo">MTN Foundation</div><div class="plogo">Airtel Zambia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== VIDEOS ==================== -->
+<section id="videos" class="section">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <div class="flex-between">
+        <div>
+          <div class="tag tag-blue">Educational Videos</div>
+          <h2 class="sec-title">Learn, watch, grow</h2>
+          <p class="sec-sub">Browse by topic — click a folder to explore videos. <span id="videoAgeNote" style="color:var(--blue);font-weight:700"></span></p>
+        </div>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap" class="admin-only-wrap">
+          <button onclick="showUploadVideoModal()" class="btn btn-primary admin-only-btn"><i class="fa-solid fa-film"></i> Post Video</button>
+          <button onclick="showUploadEventVideoModal()" class="btn btn-outline-blue admin-only-btn"><i class="fa-solid fa-calendar-plus"></i> Post Event Video</button>
+        </div>
+      </div>
+    </div>
+    <div id="videoFoldersContainer" class="reveal"></div>
+  </div>
+</section>
+
+<!-- ==================== GALLERY ==================== -->
+<section id="gallery" class="section bg-surface">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <div class="flex-between">
+        <div><div class="tag tag-teal">Gallery</div><h2 class="sec-title">Moments that matter</h2></div>
+        <button onclick="showUploadModal()" class="btn btn-primary admin-only-btn"><i class="fa-solid fa-upload"></i> Post Photos</button>
+      </div>
+    </div>
+    <div class="gallery-tabs reveal">
+      <button class="gfolder active" onclick="switchFolder('all',this)">All Photos</button>
+      <button class="gfolder" onclick="switchFolder('rights',this)">Rights</button>
+      <button class="gfolder" onclick="switchFolder('events',this)">Events</button>
+      <button class="gfolder" onclick="switchFolder('programs',this)">Programs</button>
+      <button class="gfolder" onclick="switchFolder('outreach',this)">Outreach</button>
+      <button class="gfolder" onclick="switchFolder('team',this)">Team</button>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- ==================== GAMES ==================== -->
+<section id="games" class="section">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <div class="tag tag-amber">Games &amp; Play</div>
+      <h2 class="sec-title">Learn through play</h2>
+      <p class="sec-sub">Interactive games that make children's rights education fun, memorable and engaging for every age group.</p>
+    </div>
+    <div class="games-grid reveal" id="gamesGrid"></div>
+  </div>
+</section>
+
+<!-- ==================== OPPORTUNITIES ==================== -->
+<section id="opportunities" class="section bg-surface">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <div class="flex-between">
+        <div><div class="tag tag-amber">Opportunities</div><h2 class="sec-title">For young people — apply today</h2><p class="sec-sub">Open to youth worldwide. Login or sign up to apply and track your application.</p></div>
+        <button onclick="showPostOpportunityModal()" class="btn btn-primary admin-only-btn"><i class="fa-solid fa-plus"></i> Post Opportunity</button>
+      </div>
+    </div>
+    <div class="opps-grid" id="oppsGrid"></div>
+  </div>
+</section>
+
+<!-- ==================== BLOG ==================== -->
+<section id="blog" class="section">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <div class="flex-between">
+        <div class="text-center" style="flex:1"><div class="tag tag-blue">Stories</div><h2 class="sec-title">Real voices, real change</h2></div>
+        <button onclick="showPostBlogModal()" class="btn btn-primary admin-only-btn"><i class="fa-solid fa-pen"></i> Post Story</button>
+      </div>
+    </div>
+    <div class="grid-3" id="blogGrid"></div>
+  </div>
+</section>
+
+<!-- ==================== TEAM ==================== -->
+<section id="team" class="section bg-surface">
+  <div class="sec-inner">
+    <div class="sec-head text-center reveal"><div class="tag tag-teal">Our Team</div><h2 class="sec-title">Young people leading the way</h2><p class="sec-sub">Our team is mostly made up of the very young people we serve — proof that children are capable of extraordinary leadership.</p></div>
+    <div class="team-grid" id="teamGrid"></div>
+    <div class="text-center mt-8 reveal"><button onclick="showAddTeamModal()" class="btn btn-outline-blue admin-only-btn"><i class="fa-solid fa-user-plus"></i> Add Team Member</button></div>
+  </div>
+</section>
+
+<!-- ==================== DONATE ==================== -->
+<section id="donate" class="section donate-section">
+  <div class="sec-inner text-center reveal">
+    <div class="tag" style="background:rgba(255,255,255,.2);color:white;margin-bottom:1rem">Support the Mission</div>
+    <h2 class="sec-title" style="color:white">Every contribution reaches a child</h2>
+    <p style="color:rgba(255,255,255,.8);max-width:560px;margin:1rem auto 2rem">100% of donations fund programs, emergency support and training for children worldwide. Full transparency guaranteed.</p>
+    <div class="donate-amounts" id="donateAmounts"></div>
+    <div class="donate-methods">
+      <button class="donate-method-btn active" onclick="selectDonateMethod('sonka',this)"><i class="fa-solid fa-mobile-screen"></i> Mobile Payment (Zambia)</button>
+      <button class="donate-method-btn" onclick="selectDonateMethod('bank',this)"><i class="fa-solid fa-building-columns"></i> Bank Transfer (International)</button>
+    </div>
+    <div id="donateMethodPanel" class="donate-method-panel"></div>
+  </div>
+</section>
+
+<!-- ==================== EMERGENCY ==================== -->
+<section id="emergency" class="section emg-section">
+  <div class="sec-inner">
+    <div class="sec-head text-center reveal" style="color:white">
+      <div class="tag" style="background:rgba(225,29,72,.25);color:#FB7185;margin-bottom:1rem">Emergency Support</div>
+      <h2 class="sec-title" style="color:white">A child in danger? Act now.</h2>
+      <p style="color:rgba(255,255,255,.65);max-width:560px;margin:.75rem auto 2rem">Childsphere has direct links to police, social welfare and emergency shelters. Available 24 hours a day.</p>
+    </div>
+    <div class="emg-grid reveal">
+      <a href="tel:991" class="emg-btn" style="background:rgba(30,58,138,.5);border-color:rgba(96,165,250,.3)"><i class="fa-solid fa-shield-halved emg-icon"></i><div><div class="emg-lbl">Zambia Police</div><div class="emg-num">Call 991</div></div></a>
+      <a href="tel:116" class="emg-btn" style="background:rgba(5,150,105,.25);border-color:rgba(52,211,153,.3)"><i class="fa-solid fa-child-reaching emg-icon"></i><div><div class="emg-lbl">Child Helpline</div><div class="emg-num">Call 116</div></div></a>
+      <a href="tel:992" class="emg-btn" style="background:rgba(124,58,237,.25);border-color:rgba(167,139,250,.3)"><i class="fa-solid fa-house-medical emg-icon"></i><div><div class="emg-lbl">Social Welfare</div><div class="emg-num">Call 992</div></div></a>
+      <a href="https://wa.me/260971000000?text=EMERGENCY" target="_blank" class="emg-btn" style="background:rgba(225,29,72,.25);border-color:rgba(251,113,133,.3)"><i class="fa-brands fa-whatsapp emg-icon"></i><div><div class="emg-lbl">Childsphere WhatsApp</div><div class="emg-num">+260 971 000 000</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== NEWSLETTER ==================== -->
+<section class="section-sm bg-surface">
+  <div class="sec-inner text-center reveal">
+    <h3 style="font-size:1.6rem;font-weight:800;margin-bottom:.4rem" data-i18n="stay_connected">Stay connected with Childsphere</h3>
+    <p class="sec-sub" style="margin-bottom:1.5rem" data-i18n="newsletter_sub">Get updates on programs, opportunities and stories of change.</p>
+    <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+      <input type="email" placeholder="Your email address" data-i18n-ph="email_label" required>
+      <button type="submit" class="btn btn-primary" data-i18n="subscribe">Subscribe</button>
+    </form>
+    <button onclick="showNewsletterBroadcast()" class="btn btn-outline-blue admin-only-btn" style="margin-top:1rem"><i class="fa-solid fa-paper-plane"></i> Send Newsletter to All Subscribers</button>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="footer-inner container">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:.75rem">
+        <svg viewBox="0 0 44 44" fill="none" width="36" height="36"><circle cx="22" cy="22" r="22" fill="#3B9EE8"/><circle cx="22" cy="15" r="6.5" fill="white"/><path d="M8 36c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
+        <div class="brand-name" style="font-size:1.3rem;color:white">Childsphere</div>
+      </div>
+      <p style="color:#94A3B8;font-size:.82rem;max-width:240px;line-height:1.6">Youth-led. Child-centred. Community-powered. Every child matters.</p>
+      <div class="footer-socials">
+        <a href="https://facebook.com/childsphere" target="_blank" rel="noopener" class="fsocial" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://instagram.com/childsphere" target="_blank" rel="noopener" class="fsocial" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://twitter.com/childsphere" target="_blank" rel="noopener" class="fsocial" aria-label="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://linkedin.com/company/childsphere" target="_blank" rel="noopener" class="fsocial" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://youtube.com/@childsphere" target="_blank" rel="noopener" class="fsocial" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://wa.me/260971000000" target="_blank" rel="noopener" class="fsocial" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col"><h5 data-i18n="footer_org">Organisation</h5><a href="#about">About Us</a><a href="#team">Our Team</a><a href="#blog">Stories</a><a href="#impact">Impact</a></div>
+      <div class="footer-col"><h5 data-i18n="footer_programs">Programs</h5><a href="#whatwedo">What We Do</a><a href="#activities">Activities</a><a href="#games">Games</a><a href="#programs">Programs</a><a href="#opportunities">Opportunities</a></div>
+      <div class="footer-col"><h5 data-i18n="footer_involve">Get Involved</h5><a href="#partners">Partner With Us</a><a href="#donate">Donate</a><a href="#opportunities">Volunteer</a><a href="#emergency" style="color:#F87171">Emergency</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    <p>© 2025 Childsphere. All rights reserved.</p>
+    <p>Built with love for every child.</p>
+  </div>
+</footer>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- Login -->
+<div id="loginModal" class="modal">
+  <div class="modal-overlay" onclick="closeModal('loginModal')"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('loginModal')"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-hdr">
+      <div class="modal-icon-wrap" style="background:#EFF6FF"><i class="fa-solid fa-lock" style="color:#0062FF"></i></div>
+      <h2 data-i18n="login_title">Welcome back</h2>
+      <p data-i18n="login_sub">Login to access your dashboard.</p>
+    </div>
+    <div id="loginError" class="auth-error" style="display:none"></div>
+    <form onsubmit="handleLogin(event)">
+      <div class="fg"><label data-i18n="email_label">Email Address</label><input type="email" id="loginEmail" placeholder="grace@email.com" autocomplete="email" required></div>
+      <div class="fg"><label data-i18n="password_label">Password</label>
+        <div class="pass-wrap"><input type="password" id="loginPass" placeholder="Your password" autocomplete="current-password" required><button type="button" class="pass-toggle" onclick="togglePassword('loginPass',this)"><i class="fa-solid fa-eye"></i></button></div>
+      </div>
+      <div style="text-align:right;margin-bottom:1rem"><a href="#" onclick="closeModal('loginModal');openModal('forgotModal');return false;" style="font-size:.78rem;color:var(--blue);font-weight:600">Forgot password?</a></div>
+      <button type="submit" class="btn btn-primary bfull">Login</button>
+      <p class="modal-sw">No account? <span onclick="closeModal('loginModal');openModal('signupModal')">Sign up free</span></p>
+    </form>
+  </div>
+</div>
+
+<!-- Signup -->
+<div id="signupModal" class="modal">
+  <div class="modal-overlay" onclick="closeModal('signupModal')"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('signupModal')"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-hdr">
+      <div class="modal-icon-wrap" style="background:#ECFDF5"><i class="fa-solid fa-user-plus" style="color:#059669"></i></div>
+      <h2 data-i18n="signup_title">Join Childsphere</h2>
+      <p data-i18n="signup_sub">Create a free account to apply for programs worldwide.</p>
+    </div>
+    <div id="signupError" class="auth-error" style="display:none"></div>
+    <form onsubmit="handleSignup(event)">
+      <div class="fg-2">
+        <div class="fg"><label data-i18n="full_name">Full Name</label><input type="text" id="signupName" placeholder="Grace Mwamba" autocomplete="name" required></div>
+        <div class="fg"><label data-i18n="age_label">Age</label><input type="number" id="signupAge" min="3" max="100" placeholder="16"></div>
+      </div>
+      <div class="fg"><label data-i18n="email_label">Email Address</label><input type="email" id="signupEmail" placeholder="grace@email.com" autocomplete="email" required></div>
+      <div class="fg"><label data-i18n="phone_label">Phone Number (optional)</label><input type="tel" id="signupPhone" placeholder="+260 97 123 4567" autocomplete="tel"></div>
+      <div class="fg-2">
+        <div class="fg"><label data-i18n="country_label">Country</label>
+          <select id="signupCountry" required onchange="onCountryChange(this.value)">
+            <option value="">Select country</option>
+          </select>
+        </div>
+        <div class="fg"><label data-i18n="city_label">City / Town</label>
+          <select id="signupCity" required disabled><option value="">Select city</option></select>
+        </div>
+      </div>
+      <div class="fg"><label data-i18n="password_label">Password</label>
+        <div class="pass-wrap"><input type="password" id="signupPass" placeholder="At least 6 characters" autocomplete="new-password" required oninput="updatePasswordStrength(this.value)"><button type="button" class="pass-toggle" onclick="togglePassword('signupPass',this)"><i class="fa-solid fa-eye"></i></button></div>
+        <div class="pass-strength"><div class="pass-bar"><div id="passBar" style="width:0%;height:100%;border-radius:99px;transition:.3s;background:#E11D48"></div></div><span id="passLabel" style="font-size:.72rem;color:var(--muted)">Enter a password</span></div>
+      </div>
+      <div class="auth-note"><i class="fa-solid fa-shield-halved"></i> Your password is encrypted. Childsphere staff cannot see it.</div>
+      <button type="submit" class="btn btn-primary bfull" style="margin-top:.75rem">Create Free Account</button>
+      <p class="modal-sw">Already have an account? <span onclick="closeModal('signupModal');openModal('loginModal')">Login</span></p>
+    </form>
+  </div>
+</div>
+
+<!-- Forgot Password -->
+<div id="forgotModal" class="modal">
+  <div class="modal-overlay" onclick="closeModal('forgotModal')"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('forgotModal')"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-hdr">
+      <div class="modal-icon-wrap" style="background:#FFF7ED"><i class="fa-solid fa-key" style="color:#D97706"></i></div>
+      <h2>Reset Password</h2>
+      <p>Enter your email and choose a new password.</p>
+    </div>
+    <div id="forgotError" class="auth-error" style="display:none"></div>
+    <form onsubmit="handleForgotPassword(event)">
+      <div class="fg"><label>Email Address</label><input type="email" id="forgotEmail" placeholder="grace@email.com" required></div>
+      <div class="fg"><label>New Password</label>
+        <div class="pass-wrap"><input type="password" id="forgotNewPass" placeholder="New password (at least 6 characters)" required><button type="button" class="pass-toggle" onclick="togglePassword('forgotNewPass',this)"><i class="fa-solid fa-eye"></i></button></div>
+      </div>
+      <button type="submit" class="btn btn-primary bfull">Reset Password</button>
+      <p class="modal-sw"><span onclick="closeModal('forgotModal');openModal('loginModal')">← Back to Login</span></p>
+    </form>
+  </div>
+</div>
+
+<!-- User Dashboard -->
+<div id="userDashboardModal" class="modal">
+  <div class="modal-overlay" onclick="closeModal('userDashboardModal')"></div>
+  <div class="modal-box modal-lg">
+    <button class="modal-close" onclick="closeModal('userDashboardModal')"><i class="fa-solid fa-xmark"></i></button>
+    <h2 style="margin-bottom:1.25rem;color:var(--ink)">My Dashboard</h2>
+    <div class="dash-tabs">
+      <button class="dash-tab-btn active" onclick="switchDashTab('Apps',this)"><i class="fa-solid fa-file-alt"></i> Applications</button>
+      <button class="dash-tab-btn" onclick="switchDashTab('Inbox',this)"><i class="fa-solid fa-inbox"></i> Inbox</button>
+      <button class="dash-tab-btn" onclick="switchDashTab('SavedVideos',this)"><i class="fa-solid fa-bookmark"></i> Saved Videos</button>
+      <button class="dash-tab-btn" onclick="switchDashTab('Profile',this)"><i class="fa-solid fa-user"></i> Profile</button>
+    </div>
+    <div id="dashApps" class="dash-tab-content active"></div>
+    <div id="dashInbox" class="dash-tab-content"></div>
+    <div id="dashSavedVideos" class="dash-tab-content"></div>
+    <div id="dashProfile" class="dash-tab-content"></div>
+  </div>
+</div>
+
+<!-- Pillar Modal -->
+<div id="pillarModal" class="modal"><div class="modal-overlay" onclick="closeModal('pillarModal')"></div><div class="modal-box modal-lg"><button class="modal-close" onclick="closeModal('pillarModal')"><i class="fa-solid fa-xmark"></i></button><div id="pillarContent"></div></div></div>
+
+<!-- Partner Form -->
+<div id="partnerFormModal" class="modal"><div class="modal-overlay" onclick="closeModal('partnerFormModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('partnerFormModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#F5F3FF"><i class="fa-solid fa-handshake" style="color:#7C3AED"></i></div><h2>Partner With Childsphere</h2><p>Tell us about your organisation.</p></div><form onsubmit="handlePartnerForm(event)"><div class="fg"><label>Organisation Name</label><input type="text" id="partnerOrg" placeholder="Zambia Education Trust" required></div><div class="fg"><label>Contact Person</label><input type="text" id="partnerContact" placeholder="Your name" required></div><div class="fg"><label>Email</label><input type="email" id="partnerEmail" placeholder="contact@org.zm" required></div><div class="fg"><label>Partnership Type</label><select id="partnerType" required><option value="">Select type</option><option>School / Educational Institution</option><option>Corporate Sponsor</option><option>NGO / Community Organisation</option><option>Telecom / Tech Company</option><option>Government Agency</option><option>Individual Youth Partner (19–24)</option></select></div><div class="fg"><label>How do you want to partner?</label><textarea id="partnerHow" rows="3" placeholder="Describe your ideas..."></textarea></div><button type="submit" class="btn btn-primary bfull">Submit Partnership Request</button></form></div></div>
+
+<!-- Youth Partner -->
+<div id="partnerModal" class="modal"><div class="modal-overlay" onclick="closeModal('partnerModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('partnerModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#ECFDF5"><i class="fa-solid fa-user-graduate" style="color:#059669"></i></div><h2>Apply as Youth Partner</h2><p>Our team will reach out within 48 hours.</p></div><form onsubmit="handleYouthPartner(event)"><div class="fg"><label>Full Name</label><input type="text" id="youthName" placeholder="Your full name" required></div><div class="fg"><label>Age</label><input type="number" id="youthAge" min="19" max="24" placeholder="19–24" required></div><div class="fg"><label>Partnership Role</label><select id="youthRole" required><option value="">Select role</option><option>Peer Educator</option><option>Community Champion</option><option>Youth Organisation Partner</option></select></div><div class="fg"><label>Why do you want to join?</label><textarea id="youthWhy" rows="3" placeholder="Tell us what drives you..."></textarea></div><button type="submit" class="btn btn-primary bfull">Submit Application</button></form></div></div>
+
+<!-- Upload Photo -->
+<div id="uploadModal" class="modal"><div class="modal-overlay" onclick="closeModal('uploadModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('uploadModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#EFF6FF"><i class="fa-solid fa-upload" style="color:#0062FF"></i></div><h2>Post Photos / Event</h2></div><form onsubmit="handleUpload(event)"><div class="fg"><label>Album Title</label><input type="text" id="uploadTitle" placeholder="Rights Workshop – Kafue" required></div><div class="fg"><label>Folder</label><select id="uploadFolder" required><option value="events">Events</option><option value="rights">Rights Education</option><option value="programs">Programs</option><option value="outreach">Community Outreach</option><option value="team">Team</option></select></div><div class="fg"><label>Photo URL</label><input type="url" id="uploadUrl" placeholder="https://..." required></div><div class="fg"><label>Caption</label><textarea id="uploadCaption" rows="2" placeholder="Short description..."></textarea></div><button type="submit" class="btn btn-primary bfull"><i class="fa-solid fa-upload"></i> Upload Photo</button></form></div></div>
+
+<!-- Opportunity Application Form -->
+<div id="oppApplyModal" class="modal"><div class="modal-overlay" onclick="closeModal('oppApplyModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('oppApplyModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#FFFBEB"><i class="fa-solid fa-file-pen" style="color:#D97706"></i></div><h2 id="oppApplyTitle">Apply for Opportunity</h2><p id="oppApplySubtitle">Fill in your details. Admin will review and notify you.</p></div><form onsubmit="submitOppApplication(event)" class="opp-apply-form"><input type="hidden" id="oppApplyId"><input type="hidden" id="oppApplyOppTitle"><div class="fg"><label>Full Name</label><input type="text" id="appFullName" required placeholder="Your full name"></div><div class="fg"><label>Age</label><input type="number" id="appAge" min="5" max="30" placeholder="Your age" required></div><div class="fg"><label>Email Address</label><input type="email" id="appEmail" required placeholder="your@email.com"></div><div class="fg"><label>Phone Number</label><input type="tel" id="appPhone" placeholder="+260 97 ..."></div><div class="fg"><label>Location (City, Country)</label><input type="text" id="appLocation" required placeholder="Lusaka, Zambia"></div><div class="fg"><label>Why do you want to apply? <span style="color:var(--rose)">*</span></label><textarea id="appWhy" rows="4" required placeholder="Tell us what motivates you and what you hope to gain..."></textarea></div><div class="fg"><label>Relevant Experience (optional)</label><textarea id="appExperience" rows="3" placeholder="Any relevant skills, education or experience..."></textarea></div><button type="submit" class="btn btn-primary bfull"><i class="fa-solid fa-paper-plane"></i> Submit Application</button></form></div></div>
+
+<!-- Post Opportunity -->
+<div id="postOppModal" class="modal"><div class="modal-overlay" onclick="closeModal('postOppModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('postOppModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#FFFBEB"><i class="fa-solid fa-plus" style="color:#D97706"></i></div><h2>Post New Opportunity</h2></div><form onsubmit="handlePostOpportunity(event)"><div class="fg"><label>Title</label><input type="text" id="oppTitle" placeholder="Peer Educator Training – Lusaka" required></div><div class="fg"><label>Type</label><select id="oppType" required><option value="training">Training Program</option><option value="volunteer">Volunteer Role</option><option value="event">Event</option><option value="scholarship">Scholarship</option></select></div><div class="fg-2"><div class="fg"><label>Deadline</label><input type="date" id="oppDeadline" required></div><div class="fg"><label>Age Range</label><input type="text" id="oppAgeRange" placeholder="e.g. 13–24" required></div></div><div class="fg"><label>Location</label><input type="text" id="oppLocation" placeholder="Lusaka, Zambia or Worldwide"></div><div class="fg"><label>Description</label><textarea id="oppDesc" rows="4" placeholder="Full description, what's offered, requirements..." required></textarea></div><button type="submit" class="btn btn-primary bfull">Publish Opportunity</button></form></div></div>
+
+<!-- Add Team Member -->
+<div id="addTeamModal" class="modal"><div class="modal-overlay" onclick="closeModal('addTeamModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('addTeamModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#F0FDF4"><i class="fa-solid fa-user-plus" style="color:#059669"></i></div><h2>Add Team Member</h2><p>Admin-only. Members appear publicly on the site.</p></div><form onsubmit="handleAddTeam(event)"><div class="fg"><label>Full Name</label><input type="text" id="teamName" placeholder="Mutale Banda" required></div><div class="fg"><label>Role / Title</label><input type="text" id="teamRole" placeholder="Program Director" required></div><div class="fg"><label>Photo URL</label><input type="url" id="teamPhoto" placeholder="https://..."></div><div class="fg"><label>Bio (1–2 sentences)</label><textarea id="teamBio" rows="2" placeholder="Brief introduction..."></textarea></div><div class="fg"><label>Social Media Platform</label><select id="teamSocialType"><option value="">None</option><option value="linkedin">LinkedIn</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option></select></div><div class="fg"><label>Social Media URL</label><input type="url" id="teamSocialUrl" placeholder="https://linkedin.com/in/..."></div><button type="submit" class="btn btn-primary bfull">Add to Team</button></form></div></div>
+
+<!-- Post Educational Video -->
+<div id="uploadVideoModal" class="modal"><div class="modal-overlay" onclick="closeModal('uploadVideoModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('uploadVideoModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#EFF6FF"><i class="fa-solid fa-film" style="color:#0062FF"></i></div><h2>Post Educational Video</h2><p>Add a YouTube video for a specific learning topic.</p></div><form onsubmit="handleUploadVideo(event)"><div class="fg"><label>Video Title</label><input type="text" id="videoTitle" placeholder="Know Your 54 Rights – Module 1" required></div><div class="fg"><label>YouTube Video ID or URL</label><input type="text" id="videoUrl" placeholder="e.g. dQw4w9WgXcQ or full YouTube URL" required></div><div class="fg"><label>Topic</label><select id="videoCategory" required><option value="rights">Rights Education</option><option value="wellbeing">Wellbeing &amp; Health</option><option value="emergency">Emergency Safety</option><option value="leadership">Youth Leadership</option></select></div><div class="fg"><label>Description</label><textarea id="videoDesc" rows="2" placeholder="What will learners get from this video?"></textarea></div><button type="submit" class="btn btn-primary bfull">Post Video</button></form></div></div>
+
+<!-- Post Event Video -->
+<div id="uploadEventVideoModal" class="modal"><div class="modal-overlay" onclick="closeModal('uploadEventVideoModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('uploadEventVideoModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#FFF7ED"><i class="fa-solid fa-calendar-star" style="color:#D97706"></i></div><h2>Post Event Video</h2></div><form onsubmit="handleUploadEventVideo(event)"><div class="fg"><label>Event Name</label><input type="text" id="evVideoTitle" placeholder="Annual Gala 2025 – Highlights" required></div><div class="fg"><label>YouTube Video ID or URL</label><input type="text" id="evVideoUrl" placeholder="e.g. dQw4w9WgXcQ or full URL" required></div><div class="fg-2"><div class="fg"><label>Event Date</label><input type="date" id="evVideoDate"></div><div class="fg"><label>Location</label><input type="text" id="evVideoLocation" placeholder="Lusaka, Zambia"></div></div><div class="fg"><label>Description</label><textarea id="evVideoDesc" rows="2" placeholder="Brief summary of the event..."></textarea></div><button type="submit" class="btn btn-primary bfull">Post Event Video</button></form></div></div>
+
+<!-- Blog Read Modal -->
+<div id="blogModal" class="modal"><div class="modal-overlay" onclick="closeModal('blogModal')"></div><div class="modal-box modal-lg"><button class="modal-close" onclick="closeModal('blogModal')"><i class="fa-solid fa-xmark"></i></button><div id="blogModalContent"></div></div></div>
+
+<!-- Post Story Modal -->
+<div id="postBlogModal" class="modal"><div class="modal-overlay" onclick="closeModal('postBlogModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('postBlogModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#EFF6FF"><i class="fa-solid fa-pen" style="color:#0062FF"></i></div><h2>Post a Story</h2></div><form onsubmit="handlePostBlog(event)"><div class="fg"><label>Story Title</label><input type="text" id="blogTitle" required></div><div class="fg"><label>Category</label><select id="blogCategory" required><option value="Rights Education">Rights Education</option><option value="Emergency Support">Emergency Support</option><option value="Youth Leadership">Youth Leadership</option><option value="Wellbeing">Wellbeing</option><option value="Community">Community</option></select></div><div class="fg"><label>Cover Image URL</label><input type="url" id="blogImg" placeholder="https://..."></div><div class="fg"><label>Summary (shown in grid)</label><textarea id="blogExcerpt" rows="3" required></textarea></div><div class="fg"><label>Full Story (optional)</label><textarea id="blogBody" rows="5" placeholder="Full story text..."></textarea></div><button type="submit" class="btn btn-primary bfull">Publish Story</button></form></div></div>
+
+<!-- Game Modal -->
+<div id="gameModal" class="modal"><div class="modal-overlay" onclick="closeModal('gameModal')"></div><div class="modal-box modal-lg"><button class="modal-close" onclick="closeModal('gameModal')"><i class="fa-solid fa-xmark"></i></button><h2 id="gameTitle" style="margin-bottom:1.25rem;color:var(--ink)"></h2><div id="gameBody"></div></div></div>
+
+<!-- Newsletter Broadcast -->
+<div id="newsletterBroadcastModal" class="modal"><div class="modal-overlay" onclick="closeModal('newsletterBroadcastModal')"></div><div class="modal-box"><button class="modal-close" onclick="closeModal('newsletterBroadcastModal')"><i class="fa-solid fa-xmark"></i></button><div class="modal-hdr"><div class="modal-icon-wrap" style="background:#EFF6FF"><i class="fa-solid fa-paper-plane" style="color:#0062FF"></i></div><h2>Send Newsletter</h2><p id="newsletterCount">Loading...</p></div><form onsubmit="handleNewsletterBroadcast(event)"><div class="fg"><label>Subject</label><input type="text" id="broadcastSubject" placeholder="Monthly Update — April 2025" required></div><div class="fg"><label>Message</label><textarea id="broadcastBody" rows="6" placeholder="Write your newsletter message here..." required></textarea></div><button type="submit" class="btn btn-primary bfull"><i class="fa-solid fa-paper-plane"></i> Send to All Subscribers</button></form></div></div>
+
+<!-- Video Lightbox -->
+<div id="videoLightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:99999;align-items:center;justify-content:center;flex-direction:column;gap:1rem;padding:2rem;">
+  <button style="position:absolute;top:1.5rem;right:1.5rem;background:rgba(255,255,255,.12);border:none;color:white;width:44px;height:44px;border-radius:50%;font-size:1.2rem;cursor:pointer;" onclick="closeVideoLightbox()"><i class="fa-solid fa-xmark"></i></button>
+  <div id="videoLightboxInner" style="width:100%;max-width:900px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;"></div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="admin-panel-wrap" style="display:none">
+  <div class="admin-panel">
+    <div class="admin-hdr">
+      <div>
+        <h2 class="admin-title">Admin Dashboard</h2>
+        <p style="color:#94A3B8;font-size:.82rem">Real-time activity · Status: <span id="fbStatus" style="color:#FBBF24">Local Storage</span></p>
+      </div>
+      <button onclick="closeAdminPanel()" class="btn" style="background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.2)">Close Panel</button>
+    </div>
+
+    <!-- Stats grid -->
+    <div class="admin-stats-row" id="adminStatsRow">
+      <div class="astat"><div class="astat-n" id="aStat_visitors">0</div><div class="astat-l">Visitors today</div></div>
+      <div class="astat"><div class="astat-n" id="aStat_logins">0</div><div class="astat-l">Total logins</div></div>
+      <div class="astat"><div class="astat-n" id="aStat_signups">0</div><div class="astat-l">Registered users</div></div>
+      <div class="astat"><div class="astat-n" id="aStat_pending">0</div><div class="astat-l">Pending submissions</div></div>
+      <div class="astat"><div class="astat-n" id="aStat_opps">0</div><div class="astat-l">Open opportunities</div></div>
+      <div class="astat"><div class="astat-n" id="aStat_videos">0</div><div class="astat-l">Videos posted</div></div>
+      <div class="astat"><div class="astat-n" id="aStat_stories">0</div><div class="astat-l">Stories published</div></div>
+      <div class="astat"><div class="astat-n" id="aStat_donations">0</div><div class="astat-l">Donations initiated</div></div>
+    </div>
+
+    <!-- Live Activity Log -->
+    <div class="admin-sect">
+      <h3>Live Activity Log</h3>
+      <div class="admin-log" id="activityLog"></div>
+    </div>
+
+    <!-- Pending Submissions -->
+    <div class="admin-sect">
+      <h3>Pending Submissions — Approve or Deny</h3>
+      <div style="overflow-x:auto">
+        <table class="admin-table"><thead><tr><th>Type</th><th>Applicant</th><th>Email</th><th>Opportunity</th><th>Date</th><th>Actions</th></tr></thead><tbody id="pendingBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- All Registered Users -->
+    <div class="admin-sect">
+      <h3>All Registered Users</h3>
+      <div style="overflow-x:auto">
+        <table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Joined</th></tr></thead><tbody id="allUsersBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="admin-sect">
+      <h3>Quick Actions</h3>
+      <div class="admin-qa-row">
+        <button onclick="closeAdminPanel();setTimeout(showUploadModal,100)" class="admin-qa"><i class="fa-solid fa-image"></i> Upload Photo</button>
+        <button onclick="closeAdminPanel();setTimeout(showUploadVideoModal,100)" class="admin-qa"><i class="fa-solid fa-film"></i> Post Video</button>
+        <button onclick="closeAdminPanel();setTimeout(showUploadEventVideoModal,100)" class="admin-qa"><i class="fa-solid fa-calendar-star"></i> Post Event Video</button>
+        <button onclick="closeAdminPanel();setTimeout(showPostOpportunityModal,100)" class="admin-qa"><i class="fa-solid fa-plus-circle"></i> Post Opportunity</button>
+        <button onclick="closeAdminPanel();setTimeout(showAddTeamModal,100)" class="admin-qa"><i class="fa-solid fa-user-plus"></i> Add Team Member</button>
+        <button onclick="closeAdminPanel();setTimeout(showPostBlogModal,100)" class="admin-qa"><i class="fa-solid fa-pen"></i> Post Story</button>
+        <button onclick="closeAdminPanel();setTimeout(showNewsletterBroadcast,100)" class="admin-qa"><i class="fa-solid fa-paper-plane"></i> Send Newsletter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="auth.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
